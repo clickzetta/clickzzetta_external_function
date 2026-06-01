@@ -78,8 +78,8 @@ python3 -c "import sys; sys.path.insert(0,'src'); from ml_toolkit import sentime
 ## 2. 部署
 
 ```bash
-python 1-check-config.py
-python 3-render-sql.py
+python ../check-config.py
+python ../render-sql.py
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
@@ -117,14 +117,17 @@ OSS Bucket 和 RAM 角色去阿里云控制台删除。
 
 | 文件 | 作用 |
 |------|------|
+| 文件 | 作用 |
+|------|------|
 | `config.example.json` | 配置模板 |
-| `1-check-config.py` | 检查 config.json |
 | `2-package.py` | 打包代码 + Linux 依赖（~100 MB） |
-| `3-render-sql.py` | 占位符替换 |
 | `4-deploy.sql` | 部署 5 个函数并测试 |
 | `5-cleanup.sql` | 清理 |
 | `requirements.txt` | binary 依赖（scikit-learn, numpy） |
 | `requirements_pure.txt` | 纯 Python 依赖（jieba） |
+| `../check-config.py` | 检查配置（共享） |
+| `../render-sql.py` | 占位符替换（共享） |
+| `../SETUP.md` | 云环境准备（共享） |
 
 ---
 

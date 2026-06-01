@@ -69,8 +69,8 @@ python 2-package.py     # Maven 编译 + zip 打包
 ## 3. 部署
 
 ```bash
-python 1-check-config.py
-python 3-render-sql.py
+python ../check-config.py
+python ../render-sql.py
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
@@ -268,10 +268,13 @@ cz-cli sql -f dist/5-cleanup_generated.sql --write
 
 | 文件 | 作用 |
 |------|------|
+| 文件 | 作用 |
+|------|------|
 | `config.example.json` | 配置模板 |
 | `pom.xml` | Maven 构建，hive-exec:2.3.9 (provided) |
 | `2-package.py` | Maven 编译 + zip 打包 |
-| `1-check-config.py` | 检查 config.json |
-| `3-render-sql.py` | 占位符替换 |
 | `4-deploy.sql` | 部署 3 种类型函数 + 建表 + 测试 |
 | `5-cleanup.sql` | 删表 + 删函数 + 删 Volume + 删 Connection |
+| `../check-config.py` | 检查配置（共享） |
+| `../render-sql.py` | 占位符替换（共享） |
+| `../SETUP.md` | 云环境准备（共享） |

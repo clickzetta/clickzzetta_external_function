@@ -2,7 +2,10 @@
 """检查 config.json 参数完整性"""
 import json, sys, os
 
-cfg = json.load(open(os.path.join(os.path.dirname(__file__), 'config.json')))
+root = os.getcwd()
+if not os.path.exists(os.path.join(root, 'config.json')):
+    root = os.path.dirname(os.path.abspath(__file__))
+cfg = json.load(open(os.path.join(root, 'config.json')))
 errors = []
 
 def check(path, label):
