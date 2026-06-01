@@ -31,7 +31,7 @@ CREATE EXTERNAL FUNCTION IF NOT EXISTS <schema>.tfidf_keywords       AS 'ml_tool
 
 -- 6
 SELECT <schema>.pii_mask('我的手机13812345678，邮箱alice@example.com，身份证310101199001011234'),
-       <schema>.feature_normalize('[1,2,3,4,5]', 'minmax'),
+       <schema>.feature_normalize('[10,20,30,40,50]', 'minmax'),
        <schema>.anomaly_detect('[1,2,3,4,100]'),
        <schema>.sentiment_score('产品质量非常好，物流很快，价格也便宜，下次还会再来买！'),
        <schema>.tfidf_keywords('["人工智能和机器学习是未来科技发展方向","深度学习在图像识别领域取得重大突破","人工智能将改变各行各业的运作方式"]', 3);
