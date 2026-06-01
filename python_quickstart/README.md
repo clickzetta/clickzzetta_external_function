@@ -1,6 +1,6 @@
 # Python External Function 快速入门
 
-> 最简单的云器 Lakehouse Python 外部函数实战。零依赖，零 API Key，5 分钟跑通。
+> 最简单的云器 Lakehouse Python 外部函数。零依赖，零 API Key，5 分钟跑通。
 
 ---
 
@@ -31,7 +31,7 @@
 - 选择**阿里云账号** → **其他云账号**
 - 账号 ID：`1384322691904283`
 - 角色名自定义，如 `quickstart_role`
-- 创建后 → 新增授权 → 添加 `AliyunFCFullAccess` + `AliyunOSSFullAccess`
+- 创建后 → **新增授权** → 添加 `AliyunFCFullAccess` + `AliyunOSSFullAccess`
 - 复制角色 ARN
 
 ---
@@ -57,16 +57,9 @@ role_arn     → 2.3 的角色 ARN
 ## 4. 部署
 
 ```bash
-# 1. 检查配置
 python 1-check-config.py
-
-# 2. 打包（1 KB）
 bash 2-package.sh
-
-# 3. 生成 SQL
 python 3-render-sql.py
-
-# 4. 部署
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
@@ -76,7 +69,7 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 
 ## 5. 代码
 
-`src/my_upper.py`：
+`src/my_upper.py`，一个类、一个 `evaluate` 方法：
 
 ```python
 @annotate("*->string")
@@ -85,18 +78,15 @@ class my_upper(object):
         return s.upper() if s else s
 ```
 
-一个类、一个 `evaluate` 方法。
-
 ---
 
 ## 6. 清理
 
 ```bash
-python 3-render-sql.py    # 已渲染过则跳过
 cz-cli sql -f dist/5-cleanup_generated.sql --write
 ```
 
-OSS Bucket 和 RAM 角色去阿里云控制台删除。
+OSS Bucket 和 RAM 角色去阿里云控制台手动删除。
 
 ---
 
@@ -104,18 +94,17 @@ OSS Bucket 和 RAM 角色去阿里云控制台删除。
 
 | 文件 | 作用 |
 |------|------|
-| `config.example.json` | 配置模板，复制为 `config.json` 后填写 |
+| `config.example.json` | 配置模板 |
 | `1-check-config.py` | 检查 `config.json` 完整性 |
-| `2-package.sh` | 打包 `my_upper.py` 为 zip |
-| `3-render-sql.py` | 读取 config.json，替换 4-deploy.sql 和 5-cleanup.sql 中的占位符 |
-| `4-deploy.sql` | 部署：Storage Connection → API Connection → Volume → PUT → CREATE FUNCTION → 测试 |
+| `2-package.sh` | 打包 `my_upper.py` 为 zip（1 KB） |
+| `3-render-sql.py` | 将 `4-deploy.sql` 和 `5-cleanup.sql` 的占位符替换为 `config.json` 的值 |
+| `4-deploy.sql` | 部署模板：Storage Connection → API Connection → Volume → PUT → CREATE FUNCTION → 测试 |
 | `5-cleanup.sql` | 删除函数、Volume、Connection |
-
-执行顺序：1 → 2 → 3 → 4 → 5。
 
 ---
 
 ## 接下来
 
-- 加依赖？把第三方库放进 zip 即可，参考 `../python_ai_function/` 的 `2-package.py --deps`
-- 30 个 AI 函数完整示例 → `../python_ai_function/`
+- SQL ML 实战（scikit-learn + jieba）→ `../python_advanced/`
+- 30 个 AI 函数 + 第三方依赖 → `../python_ai_function/`
+- Java UDF → `../java_udf/`

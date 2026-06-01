@@ -96,6 +96,8 @@ cz-cli sql -f dist/deploy_generated.sql --write
 
 ## 4. 测试
 
+执行 `dist/deploy_generated.sql` 末尾的 SELECT 语句，或：
+
 ```sql
 -- 摘要
 SELECT <schema>.ai_text_summarize('人工智能正在改变世界。', '<api_key>');
@@ -110,6 +112,8 @@ SELECT <schema>.ai_text_to_embedding('机器学习很有趣', '<api_key>');
 SELECT <schema>.ai_semantic_similarity('苹果好吃', '苹果是健康水果', '<api_key>');
 ```
 
+`<api_key>` 替换为 `config.json` → `dashscope.api_key` 的值。
+
 所有函数返回 JSON，用 `JSON_EXTRACT` 取值：
 
 ```sql
@@ -121,7 +125,7 @@ SELECT JSON_EXTRACT(<schema>.ai_text_summarize(content, 'key'), '$.summary') FRO
 ## 5. 清理
 
 ```bash
-cz-cli sql -f 5-cleanup.sql --write
+cz-cli sql -f dist/5-cleanup_generated.sql --write
 ```
 
 OSS Bucket 和 RAM 角色去阿里云控制台手动删除。

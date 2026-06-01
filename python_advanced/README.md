@@ -1,6 +1,6 @@
 # SQL ML — Python External Function 进阶
 
-> 5 个 ML/PII 函数，基于 scikit-learn + jieba，演示第三方依赖打包
+> 5 个 ML/PII 函数，基于 scikit-learn + jieba，演示第三方依赖打包。
 
 ---
 
@@ -18,7 +18,7 @@
 
 ## 前置条件
 
-已完成 `../python_quickstart/`，阿里云 OSS / FC / RAM 角色已就绪。
+阿里云 OSS / FC / RAM 角色已就绪（首次使用请参考 `../python_quickstart/` 第 2 节）。
 
 ---
 
@@ -28,21 +28,21 @@
 cp config.example.json config.json
 ```
 
-与 quickstart 配置项相同，填好的话复制一份过来。
+与 quickstart 配置项相同。
 
 ---
 
-## 2. 打包（含 Linux scikit-learn + jieba 依赖）
+## 2. 打包（含 Linux scikit-learn + jieba）
 
 ```bash
 python 2-package.py
 ```
 
-产物：`dist/ml_toolkit.zip`（~100 MB，含完整 Linux scikit-learn / numpy / scipy / jieba）
+产物：`dist/ml_toolkit.zip`（~100 MB）。
 
-`2-package.py` 分两步安装依赖：
-- **binary 依赖**（scikit-learn + numpy）：用 `--platform manylinux2014_x86_64 --only-binary :all:` 下载 Linux 版本
-- **纯 Python 依赖**（jieba）：不加 platform 限制，直接安装跨平台 .py 文件
+`2-package.py` 分两步安装：
+- **binary 依赖**（scikit-learn + numpy）：`--platform manylinux2014_x86_64 --only-binary :all:`
+- **纯 Python 依赖**（jieba）：不加 platform 限制
 
 ---
 
@@ -71,7 +71,7 @@ SELECT <schema>.anomaly_detect('[1,2,3,4,100]');
 -- 情感评分（jieba 分词）
 SELECT <schema>.sentiment_score('产品质量非常好，物流很快，非常满意！');
 
--- TF-IDF 关键词（sklearn TfidfVectorizer）
+-- TF-IDF（sklearn TfidfVectorizer）
 SELECT <schema>.tfidf_keywords('["文档1","文档2","文档3"]', 3);
 ```
 
@@ -79,13 +79,12 @@ SELECT <schema>.tfidf_keywords('["文档1","文档2","文档3"]', 3);
 
 ## 5. 如何扩展
 
-`requirements.txt` 加需要的库 → `2-package.py` 重新打包 → 部署即可。
+加库到 `requirements.txt`（binary）或 `requirements_pure.txt`（纯 Python），重新打包部署：
 
 ```bash
-pip install your-package          # 本地测试
-# 加到 requirements.txt 或 requirements_pure.txt
-python 2-package.py               # 重新打包
-cz-cli sql -f dist/4-deploy_generated.sql --write   # 重新部署
+python 2-package.py
+python 3-render-sql.py
+cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
 ---
@@ -96,12 +95,19 @@ cz-cli sql -f dist/4-deploy_generated.sql --write   # 重新部署
 cz-cli sql -f dist/5-cleanup_generated.sql --write
 ```
 
+OSS Bucket 和 RAM 角色去阿里云控制台删除。
+
 ---
 
-## 附录：依赖打包原理
+## 附录：脚本说明
 
-| 文件 | 内容 |
+| 文件 | 作用 |
 |------|------|
-| `requirements.txt` | scikit-learn + numpy（binary，Linux manylinux wheel） |
-| `requirements_pure.txt` | jieba（纯 Python，跨平台 .py） |
-| `2-package.py` | 先装 binary 依赖，再装 pure Python |
+| `config.example.json` | 配置模板 |
+| `1-check-config.py` | 检查 `config.json` 完整性 |
+| `2-package.py` | 打包代码 + Linux 依赖（~100 MB） |
+| `3-render-sql.py` | 将 `4-deploy.sql` 和 `5-cleanup.sql` 的占位符替换为 `config.json` 的值 |
+| `4-deploy.sql` | 部署 5 个 ML 函数 + 测试 |
+| `5-cleanup.sql` | 删除函数、Volume、Connection |
+| `requirements.txt` | binary 依赖（scikit-learn, numpy） |
+| `requirements_pure.txt` | 纯 Python 依赖（jieba） |

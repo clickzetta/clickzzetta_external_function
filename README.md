@@ -13,4 +13,4 @@
 
 ## 快速开始
 
-先跑 [python_quickstart](python_quickstart/)，5 分钟搞定最简链路。然后根据需要选择其他示例。
+从 [python_quickstart](python_quickstart/) 开始，5 分钟跑通最简链路。然后根据需求选择其他示例。
