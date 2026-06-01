@@ -1,0 +1,17 @@
+{
+  "_1_schema": "cz-cli sql \"SELECT current_schema()\" 获取后填到这里",
+  "schema": "填你的 schema 名",
+  "_2_aliyun": "OSS Bucket 和 AccessKey，见 README 第二步",
+  "aliyun": {
+    "oss": {
+      "bucket": "你的-oss-bucket-名",
+      "endpoint": "oss-cn-shanghai.aliyuncs.com",
+      "access_id": "你的-AccessKey-ID",
+      "access_key": "你的-AccessKey-Secret"
+    },
+    "fc": {
+      "region": "cn-shanghai",
+      "role_arn": "acs:ram::你的账号ID:role/你的角色名"
+    }
+  }
+}
