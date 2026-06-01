@@ -22,15 +22,10 @@
 cp ../config.example.json config.json
 ```
 
-把以下字段换成你自己的值：
-
-```
-schema       → cz-cli sql "SELECT current_schema()" 的输出
-bucket       → SETUP.md 创建的 Bucket 名称
-access_id    → SETUP.md 的 AccessKey ID
-access_key   → SETUP.md 的 AccessKey Secret
-role_arn     → SETUP.md 的角色 ARN
-```
+打开 `config.json`：
+1. 确认 `platform` 是你的云（`aliyun` / `tencent` / `aws`）
+2. 按 [SETUP.md](../SETUP.md) 填你选的那朵云的对应字段
+3. `schema` 填 `cz-cli sql "SELECT current_schema()"` 的输出
 
 ---
 
