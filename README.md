@@ -13,4 +13,6 @@
 
 ## 快速开始
 
-从 [python_quickstart](python_quickstart/) 开始，5 分钟跑通最简链路。然后根据需求选择其他示例。
+1. **一次性** [SETUP.md](SETUP.md) — 配置云环境（阿里云 / 腾讯云 / AWS）
+2. [python_quickstart](python_quickstart/) — 5 分钟跑通最简链路
+3. 按需选择其他示例

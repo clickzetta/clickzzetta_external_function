@@ -1,7 +1,7 @@
 {
-  "_1_schema": "cz-cli sql \"SELECT current_schema()\" 获取后填到这里",
+  "_1_schema": "cz-cli sql \"SELECT current_schema()\" 获取",
   "schema": "填你的 schema 名",
-  "_2_aliyun": "OSS Bucket 和 AccessKey，见 README 第二步",
+  "_2_aliyun": "见 SETUP.md 获取以下值",
   "aliyun": {
     "oss": {
       "bucket": "你的-oss-bucket-名",

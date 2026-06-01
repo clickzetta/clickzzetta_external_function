@@ -4,47 +4,21 @@
 
 ---
 
-## 0. 安装 cz-cli
+## 1. 安装 cz-cli + 环境准备
 
 详见 [cz-cli 使用指南](https://yunqi.tech/documents/cz-cli)。
 
----
-
-## 1. 准备阿里云资源
-
-以下操作在阿里云控制台完成，一次性。
-
-### 1.1 开通函数计算 FC
-
-打开 [函数计算控制台](https://fc.console.aliyun.com)，点击"立即开通"。选择**华东 2（上海）**。
-
-### 1.2 获取百炼 API Key
-
-打开 [百炼控制台](https://bailian.console.aliyun.com) → API Key 管理，复制 Key。
-
-### 1.3 创建 OSS Bucket + 获取 AccessKey
-
-打开 [OSS 控制台](https://oss.console.aliyun.com) → 创建 Bucket：
-
-- **Bucket 名称**：自定义，如 `my-udf-bucket`
-- **地域**：华东 2（上海）
-- 其他默认即可
-
-打开 [RAM 用户管理](https://ram.console.aliyun.com/users) → 点你的用户名 → 创建 AccessKey，保存 AccessKey ID 和 Secret。
-
-### 1.4 创建 RAM 角色
-
-打开 [RAM 控制台](https://ram.console.aliyun.com) → 身份管理 → 角色 → 创建角色：
-
-- 选择**阿里云账号** → **其他云账号**
-- 账号 ID：`1384322691904283`
-- 角色名称自定义，如 `ai_function_role`
-- 创建后进入角色详情 → **新增授权** → 添加 `AliyunFCFullAccess` + `AliyunOSSFullAccess`
-- 复制角色 ARN（格式：`acs:ram::你的账号ID:role/ai_function_role`）
+按 [SETUP.md](../SETUP.md) 完成阿里云 OSS / FC / RAM 角色配置（一次性，与 quickstart / advanced 共享）。
 
 ---
 
-## 2. 填写配置
+## 2. 获取百炼 API Key
+
+打开 [百炼控制台](https://bailian.console.aliyun.com) → API Key 管理，复制 Key，后续填入 config.json → `dashscope.api_key`。
+
+---
+
+## 3. 填写配置
 
 ```bash
 # 获取 schema

@@ -7,7 +7,7 @@
 ## 前置条件
 
 - JDK 8+ / Maven 3+
-- 阿里云 OSS / FC / RAM 角色已就绪（首次使用参考 `../python_quickstart/` 第 2 节）
+- [SETUP.md](../SETUP.md) 的云环境已完成（一次性，与 Python 示例共享）
 
 ---
 
