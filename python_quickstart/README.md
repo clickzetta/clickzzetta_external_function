@@ -65,6 +65,16 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 
 看到 `HELLO WORLD` 就成功了。
 
+### 常见坑
+
+| 错误 | 原因 | 解决 |
+|------|------|------|
+| `function not found` | 没加 schema 前缀 | `SELECT <schema>.my_upper('hello')` |
+| `HTTP_GENERAL_ERROR(640)` | RAM 角色没配信任策略 / Bucket 跨地域 | RAM 控制台检查信任策略，确认 OSS 和 FC 都是 `cn-shanghai` |
+| `AccessDenied` | RAM 角色缺 OSS 权限 | 角色详情 → 新增授权 → `AliyunOSSFullAccess` |
+| PUT 执行后 404 | `cz-cli -f` 多行 PUT 解析失败 | PUT 命令前后不要有注释行 |
+| `deploy_generated.sql` 不存在 | 没跑 `3-render-sql.py` | `python 3-render-sql.py` |
+
 ---
 
 ## 5. 代码

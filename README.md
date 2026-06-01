@@ -9,7 +9,7 @@
 | [python_quickstart](python_quickstart/) | Python | ★ | 最简单的 UDF：输入字符串返回大写 |
 | [python_advanced](python_advanced/) | Python | ★★ | 5 个 ML 函数：PII 脱敏、归一化、异常检测、情感评分、TF-IDF |
 | [python_ai_function](python_ai_function/) | Python | ★★★ | 30 个 AI 函数 + 第三方依赖（dashscope）打包 |
-| [java_udf](java_udf/) | Java | ★★ | Java UDF：PII 脱敏，演示 Hive GenericUDF 框架 |
+| [java_udf](java_udf/) | Java | ★★ | UDF/UDAF/UDTF 三种类型全覆盖 |
 
 ## 快速开始
 
