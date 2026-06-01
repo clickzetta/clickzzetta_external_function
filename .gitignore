@@ -10,7 +10,6 @@ ENV/
 env/
 
 # Distribution / packaging
-.Python
 build/
 develop-eggs/
 dist/
@@ -43,40 +42,11 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Project specific
-data/test_report_*.json
-data/validation_result_*.json
-data/analysis_result_*.json
-archive/backups/
-*.backup*
-*.bak
-
-# Logs
-*.log
-
 # API Keys and Config
 .env
 config.json
-test_config.json
-*_config.json
-!*example*.json
-!*template*.json
 
-# Test data and results
-data/*.json
-data/*.txt
-!data/*sample*.json
-!data/*example*.json
-test_*.py
-debug_*.py
-*test_result*.json
-*validation_result*.json
-*analysis_result*.json
-
-# Archive files with potential sensitive data
-archive/dev_files/*_review.json
-archive/dev_files/*_report.json
-
-# Claude Desktop configs
-*claude_desktop_config*.json
-!*example*.json
+# Generated output files
+data/*_result_*.json
+data/*_report_*.json
+data/*_validation_*.json
