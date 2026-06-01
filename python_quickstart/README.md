@@ -53,7 +53,7 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 | `HTTP_GENERAL_ERROR(640)` | RAM 信任策略未配 / Bucket 跨地域 | 见 [SETUP.md > 验证信任策略](../SETUP.md) |
 | `AccessDenied` | RAM 角色缺 OSS 权限 | 角色详情 → 新增授权 → `AliyunOSSFullAccess` |
 | PUT 执行后 404 | 多行 PUT 被注释行中断 | PUT 命令一行写完，不拆行 |
-| `deploy_generated.sql` 不存在 | 没跑 `3-render-sql.py` | `python ../render-sql.py` |
+| `deploy_generated.sql` 不存在 | 没跑渲染 | `python ../render-sql.py` |
 
 ---
 
