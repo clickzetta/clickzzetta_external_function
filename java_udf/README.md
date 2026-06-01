@@ -1,6 +1,6 @@
-# Java External Function — PII 数据脱敏
+# Java External Function 完整演示
 
-> 云器 Lakehouse 支持 Java 编写的外部函数，通过继承 Hive GenericUDF 实现。
+> 覆盖 UDF / UDAF / UDTF 三种类型，全部基于 Hive GenericUDF API
 
 ---
 
@@ -11,15 +11,13 @@
 
 ---
 
-## 和 Python External Function 的区别
+## 三种函数类型
 
-| | Python | Java |
-|------|--------|------|
-| 语言 | Python 3.10 | Java 8 |
-| 函数类型 | UDF | UDF / UDAF / UDTF |
-| 入口 | `def evaluate()` | `GenericUDF.evaluate()` |
-| DDL 属性 | `python3.mc.v0` | `java8.hive2.v0` |
-| 打包 | `zip -j` | Maven + `jar-with-dependencies` |
+| 类型 | 基类 | 输入 → 输出 | DDL 关键属性 | 本示例函数 |
+|------|------|-------------|-------------|-----------|
+| **UDF** | `GenericUDF` | 1 行 → 1 行 | `'remote.udf.api'='java8.hive2.v0'` | `pii_mask` — PII 脱敏 |
+| **UDAF** | `GenericUDAFResolver2` | 多行 → 1 行（聚合） | 加 `'remote.udf.category'='AGGREGATOR'` | `agg_stats` — SUM/AVG/MIN/MAX/COUNT |
+| **UDTF** | `GenericUDTF` | 1 行 → 多行（展开） | 加 `'remote.udf.category'='TABLE_VALUED'` | `log_explode` — 日志拆解 |
 
 ---
 
@@ -37,7 +35,7 @@ cp config.example.json config.json
 
 ```bash
 mvn clean package
-bash build.sh     # 将 jar 打包为 ClickZetta 的 zip 格式
+bash build.sh     # jar → zip
 ```
 
 ---
@@ -50,44 +48,72 @@ python 3-render-sql.py
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
-看到脱敏后的文本返回即成功。
-
 ---
 
-## 4. 代码核心框架
+## 4. 代码
 
-`PiiMaskUDF.java` 必须实现三个方法：
+### UDF — PiiMaskUDF
 
 ```java
 public class PiiMaskUDF extends GenericUDF {
+    public ObjectInspector initialize(ObjectInspector[] args) { ... }   // 参数校验
+    public Object evaluate(DeferredObject[] args) { ... }               // 正则脱敏
+    public String getDisplayString(String[] children) { ... }
+}
+```
 
-    @Override
-    public ObjectInspector initialize(ObjectInspector[] arguments) {
-        // 1. 参数类型校验
-        // 2. 声明返回类型
-        return PrimitiveObjectInspectorFactory.javaStringObjectInspector;
-    }
+### UDAF — AggStatsUDAF
 
-    @Override
-    public Object evaluate(DeferredObject[] arguments) {
-        // 核心逻辑：正则匹配 → 脱敏替换
-        return maskedText;
-    }
-
-    @Override
-    public String getDisplayString(String[] children) {
-        return "pii_mask(...)";
+```java
+public class AggStatsUDAF extends GenericUDAFResolver2 {
+    public GenericUDAFEvaluator getEvaluator(TypeInfo[] params) {
+        return new AggStatsEvaluator();  // 内部类实现 iterate/merge/terminate 等
     }
 }
 ```
+
+UDAF 必须实现：`iterate()` 逐行累加、`merge()` 合并分区结果、`terminate()` 输出最终值。
+
+### UDTF — LogExplodeUDTF
+
+```java
+public class LogExplodeUDTF extends GenericUDTF {
+    public StructObjectInspector initialize(ObjectInspector[] args) { ... }  // 声明输出列
+    public void process(Object[] record) { forward(new Object[]{ts, evt}); }  // 每行输出多行
+    public void close() { }
+}
+```
+
+UDTF 调用时必须用 `LATERAL` 语法。
 
 ---
 
 ## 5. 测试
 
+### UDF
+
 ```sql
 SELECT <schema>.pii_mask('我的手机13812345678，邮箱alice@example.com，身份证310101199001011234');
--- → "我的手机<phone>，邮箱<email>，身份证<id_card>"
+```
+
+### UDAF（需先建测试表）
+
+```sql
+CREATE TABLE test_scores (val DOUBLE);
+INSERT INTO test_scores VALUES (3.5), (4.2), (2.8), (5.0);
+SELECT <schema>.agg_stats(val) FROM test_scores;
+-- → [sum, avg, min, max, count]
+```
+
+### UDTF
+
+```sql
+SELECT t.ts, t.event
+FROM (SELECT '[2025-01-15 10:30:00] 用户登录
+[2025-01-15 10:35:00] 查询订单' AS log) s,
+LATERAL <schema>.log_explode(s.log) t;
+-- → 10:30:00 | 用户登录
+--    10:35:00 | 查询订单
 ```
 
 ---
@@ -105,9 +131,9 @@ cz-cli sql -f dist/5-cleanup_generated.sql --write
 | 文件 | 作用 |
 |------|------|
 | `config.example.json` | 配置模板 |
-| `pom.xml` | Maven 构建文件，依赖 hive-exec 2.3.9 |
-| `build.sh` | Maven 编译 + 打包为 zip |
-| `1-check-config.py` | 检查 `config.json` 完整性 |
-| `3-render-sql.py` | 替换占位符，生成 4/5 的 `_generated.sql` |
-| `4-deploy.sql` | 部署模板 |
-| `5-cleanup.sql` | 删除函数、Volume、Connection |
+| `pom.xml` | Maven，依赖 hive-exec 2.3.9 |
+| `build.sh` | `mvn package` + zip 打包 |
+| `1-check-config.py` | 检查 config.json |
+| `3-render-sql.py` | 占位符替换 |
+| `4-deploy.sql` | 部署 3 种类型函数 + 测试 |
+| `5-cleanup.sql` | 清理 |
