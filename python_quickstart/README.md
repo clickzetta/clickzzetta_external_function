@@ -19,7 +19,7 @@
 ## 3. 填写配置
 
 ```bash
-cp config.example.json config.json
+cp ../config.example.json config.json
 ```
 
 把以下字段换成你自己的值：
@@ -37,9 +37,9 @@ role_arn     → SETUP.md 的角色 ARN
 ## 4. 部署
 
 ```bash
-python ../check-config.py
+python ../1-check-config.py
 python 2-package.py
-python ../render-sql.py
+python ../3-render-sql.py
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
@@ -53,7 +53,7 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 | `HTTP_GENERAL_ERROR(640)` | RAM 信任策略未配 / Bucket 跨地域 | 见 [SETUP.md > 验证信任策略](../SETUP.md) |
 | `AccessDenied` | RAM 角色缺 OSS 权限 | 角色详情 → 新增授权 → `AliyunOSSFullAccess` |
 | PUT 执行后 404 | 多行 PUT 被注释行中断 | PUT 命令一行写完，不拆行 |
-| `deploy_generated.sql` 不存在 | 没跑渲染 | `python ../render-sql.py` |
+| `deploy_generated.sql` 不存在 | 没跑渲染 | `python ../3-render-sql.py` |
 
 ---
 
@@ -86,12 +86,14 @@ OSS Bucket 和 RAM 角色去阿里云控制台手动删除。
 |------|------|
 | 文件 | 作用 |
 |------|------|
-| `config.example.json` | 配置模板 |
+| 文件 | 作用 |
+|------|------|
+| `../config.example.json` | 配置模板（共享） |
+| `../1-check-config.py` | 检查 config.json（共享） |
 | `2-package.py` | 打包为 zip（1 KB） |
-| `4-deploy.sql` | 部署模板：Connection → Volume → PUT → CREATE FUNCTION → 测试 |
-| `5-cleanup.sql` | 删除函数、Volume、Connection |
-| `../check-config.py` | 检查配置（共享） |
-| `../render-sql.py` | 占位符替换（共享） |
+| `../3-render-sql.py` | 占位符替换（共享） |
+| `4-deploy.sql` | 部署模板 |
+| `5-cleanup.sql` | 清理 |
 | `../SETUP.md` | 云环境准备（共享） |
 
 ---

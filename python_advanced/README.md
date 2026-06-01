@@ -78,8 +78,8 @@ python3 -c "import sys; sys.path.insert(0,'src'); from ml_toolkit import sentime
 ## 2. 部署
 
 ```bash
-python ../check-config.py
-python ../render-sql.py
+python ../1-check-config.py
+python ../3-render-sql.py
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
@@ -117,16 +117,14 @@ OSS Bucket 和 RAM 角色去阿里云控制台删除。
 
 | 文件 | 作用 |
 |------|------|
-| 文件 | 作用 |
-|------|------|
-| `config.example.json` | 配置模板 |
 | `2-package.py` | 打包代码 + Linux 依赖（~100 MB） |
 | `4-deploy.sql` | 部署 5 个函数并测试 |
 | `5-cleanup.sql` | 清理 |
 | `requirements.txt` | binary 依赖（scikit-learn, numpy） |
 | `requirements_pure.txt` | 纯 Python 依赖（jieba） |
-| `../check-config.py` | 检查配置（共享） |
-| `../render-sql.py` | 占位符替换（共享） |
+| `../config.example.json` | 配置模板（共享） |
+| `../1-check-config.py` | 检查配置（共享） |
+| `../3-render-sql.py` | 占位符替换（共享） |
 | `../SETUP.md` | 云环境准备（共享） |
 
 ---
@@ -135,7 +133,7 @@ OSS Bucket 和 RAM 角色去阿里云控制台删除。
 
 ```
 clickzetta_external_function/
-├── SETUP.md              # 云环境准备（一次性）
+├── SETUP.md / 1-check-config.py / 3-render-sql.py / config.example.json    # 共享
 ├── python_quickstart/    # 最简单，1 个函数
 ├── python_advanced/      # 5 个 ML 函数 + 依赖打包（本示例）
 ├── python_ai_function/   # 30 个 AI 函数 + dashscope 依赖
