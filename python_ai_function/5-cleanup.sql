@@ -29,9 +29,9 @@ DROP FUNCTION IF EXISTS <schema>.ai_risk_text_detect;
 DROP FUNCTION IF EXISTS <schema>.ai_contract_extract;
 DROP FUNCTION IF EXISTS <schema>.ai_resume_parse;
 DROP FUNCTION IF EXISTS <schema>.ai_customer_segment;
-DROP FUNCTION IF EXISTS <schema>.ai_product_description_gen;
+DROP FUNCTION IF EXISTS <schema>.ai_product_description_generate;
 DROP FUNCTION IF EXISTS <schema>.ai_industry_classification;
 
-DROP VOLUME IF EXISTS external_functions_prod;
-DROP CONNECTION IF EXISTS shanghai_func_conn;
-DROP CONNECTION IF EXISTS oss_sh_conn;
+DROP VOLUME IF EXISTS <clickzetta.volume>;
+DROP CONNECTION IF EXISTS <aliyun.fc.connection_name>;
+DROP CONNECTION IF EXISTS <clickzetta.storage_connection>;

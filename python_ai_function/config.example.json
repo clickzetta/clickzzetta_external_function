@@ -17,7 +17,6 @@
   },
   "aliyun": {
     "_用途": "OSS 存代码包，RAM 角色授权 FC 读取 OSS，FC 执行 Python 代码",
-    "region": "cn-shanghai",
     "oss": {
       "_用途": "存放打包后的 zip 文件，函数计算从此处下载",
       "bucket": "你的-oss-bucket-名",

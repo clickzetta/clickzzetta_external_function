@@ -1,5 +1,5 @@
 -- 云器 Lakehouse External Function 部署脚本
--- 使用：python 1-check-config.py && python 3-render-sql.py && cz-cli sql -f dist/deploy_generated.sql --write
+-- python 2-package.py --deps && python 1-check-config.py && python 3-render-sql.py && cz-cli sql -f dist/4-deploy_generated.sql --write
 
 -- 1. Storage Connection（OSS 认证，供 External Volume 使用）
 CREATE STORAGE CONNECTION IF NOT EXISTS <clickzetta.storage_connection>
@@ -58,7 +58,7 @@ CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_text_summarize    
 -- CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_contract_extract            AS 'ai_functions_complete.ai_contract_extract'            USING ARCHIVE 'volume://<clickzetta.volume>/clickzetta_ai_functions_full.zip' CONNECTION <aliyun.fc.connection_name> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');
 -- CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_resume_parse               AS 'ai_functions_complete.ai_resume_parse'               USING ARCHIVE 'volume://<clickzetta.volume>/clickzetta_ai_functions_full.zip' CONNECTION <aliyun.fc.connection_name> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');
 -- CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_customer_segment            AS 'ai_functions_complete.ai_customer_segment'            USING ARCHIVE 'volume://<clickzetta.volume>/clickzetta_ai_functions_full.zip' CONNECTION <aliyun.fc.connection_name> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');
--- CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_product_description_gen    AS 'ai_functions_complete.ai_product_description_generate' USING ARCHIVE 'volume://<clickzetta.volume>/clickzetta_ai_functions_full.zip' CONNECTION <aliyun.fc.connection_name> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');
+-- CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_product_description_generate    AS 'ai_functions_complete.ai_product_description_generateerate' USING ARCHIVE 'volume://<clickzetta.volume>/clickzetta_ai_functions_full.zip' CONNECTION <aliyun.fc.connection_name> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');
 -- CREATE EXTERNAL FUNCTION IF NOT EXISTS <clickzetta.schema>.ai_industry_classification     AS 'ai_functions_complete.ai_industry_classification'     USING ARCHIVE 'volume://<clickzetta.volume>/clickzetta_ai_functions_full.zip' CONNECTION <aliyun.fc.connection_name> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');
 
 -- 6. 验证（调用时必须加 schema 前缀）

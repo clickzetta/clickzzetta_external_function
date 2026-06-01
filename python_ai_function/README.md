@@ -87,7 +87,7 @@ python 1-check-config.py
 python 3-render-sql.py
 
 # 5. 部署
-cz-cli sql -f dist/deploy_generated.sql --write
+cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 
 看到 AI 摘要返回结果就成功了。
@@ -96,7 +96,7 @@ cz-cli sql -f dist/deploy_generated.sql --write
 
 ## 4. 测试
 
-执行 `dist/deploy_generated.sql` 末尾的 SELECT 语句，或：
+部署时已自动执行测试（`deploy.sql` 末尾的 SELECT）。或在 `dist/4-deploy_generated.sql` 末尾找，也可以修改占位符后手动执行：
 
 ```sql
 -- 摘要
