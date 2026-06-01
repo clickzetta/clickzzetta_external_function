@@ -58,7 +58,7 @@ role_arn     → 2.3 的角色 ARN
 
 ```bash
 python 1-check-config.py
-bash 2-package.sh
+python 2-package.py
 python 3-render-sql.py
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
@@ -96,7 +96,7 @@ OSS Bucket 和 RAM 角色去阿里云控制台手动删除。
 |------|------|
 | `config.example.json` | 配置模板 |
 | `1-check-config.py` | 检查 `config.json` 完整性 |
-| `2-package.sh` | 打包 `my_upper.py` 为 zip（1 KB） |
+| `2-package.py` | 打包 `my_upper.py` 为 zip（1 KB） |
 | `3-render-sql.py` | 将 `4-deploy.sql` 和 `5-cleanup.sql` 的占位符替换为 `config.json` 的值 |
 | `4-deploy.sql` | 部署模板：Storage Connection → API Connection → Volume → PUT → CREATE FUNCTION → 测试 |
 | `5-cleanup.sql` | 删除函数、Volume、Connection |
