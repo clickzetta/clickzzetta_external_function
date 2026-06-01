@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
  * 自动识别并替换：手机号、邮箱、身份证号
  * <p>
  * SQL 用法:
- * SELECT pii_mask(content) FROM sensitive_table;
+ * SELECT <schema>.pii_mask(content) FROM sensitive_table;
  */
 public class PiiMaskUDF extends GenericUDF {
 

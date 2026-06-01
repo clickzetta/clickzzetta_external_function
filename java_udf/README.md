@@ -96,12 +96,13 @@ UDTF 调用时必须用 `LATERAL` 语法。
 SELECT <schema>.pii_mask('我的手机13812345678，邮箱alice@example.com，身份证310101199001011234');
 ```
 
-### UDAF（需先建测试表）
+### UDAF
+
+`deploy.sql` 会自动建表并插入测试数据，或手动执行：
 
 ```sql
-CREATE TABLE test_scores (val DOUBLE);
-INSERT INTO test_scores VALUES (3.5), (4.2), (2.8), (5.0);
-SELECT <schema>.agg_stats(val) FROM test_scores;
+INSERT INTO <schema>.java_udf_test_scores VALUES (3.5), (4.2), (2.8), (5.0), (3.9);
+SELECT <schema>.agg_stats(val) FROM <schema>.java_udf_test_scores;
 -- → [sum, avg, min, max, count]
 ```
 
@@ -110,10 +111,12 @@ SELECT <schema>.agg_stats(val) FROM test_scores;
 ```sql
 SELECT t.ts, t.event
 FROM (SELECT '[2025-01-15 10:30:00] 用户登录
-[2025-01-15 10:35:00] 查询订单' AS log) s,
+[2025-01-15 10:35:00] 查询订单
+[2025-01-15 10:40:00] 提交支付' AS log) s,
 LATERAL <schema>.log_explode(s.log) t;
 -- → 10:30:00 | 用户登录
 --    10:35:00 | 查询订单
+--    10:40:00 | 提交支付
 ```
 
 ---

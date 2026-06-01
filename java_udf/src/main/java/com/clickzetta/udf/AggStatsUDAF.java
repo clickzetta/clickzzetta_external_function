@@ -16,7 +16,7 @@ import org.apache.hadoop.io.DoubleWritable;
  * UDAF — 文本评分聚合：对每行返回一个 JSON 分数，聚合后输出 avg/min/max/count
  *
  * SQL 用法:
- *   SELECT agg_stats(score_json) FROM article_ratings;
+ *   SELECT <schema>.agg_stats(score_json) FROM article_ratings;
  *
  * DDL 必须加:
  *   WITH PROPERTIES ('remote.udf.api'='java8.hive2.v0', 'remote.udf.category'='AGGREGATOR')
