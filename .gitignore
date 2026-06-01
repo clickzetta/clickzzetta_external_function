@@ -50,3 +50,6 @@ config.json
 data/*_result_*.json
 data/*_report_*.json
 data/*_validation_*.json
+config.json
+dist/*_generated.sql
+dist/*.zip

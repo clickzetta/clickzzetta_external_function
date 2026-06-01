@@ -20,9 +20,7 @@ USING CONNECTION qs_oss
 DIRECTORY = (ENABLE = true);
 
 -- 4
-PUT '<project_dir>/dist/my_upper.zip'
-TO VOLUME qs_vol
-FILE 'my_upper.zip';
+PUT '<project_dir>/dist/my_upper.zip' TO VOLUME qs_vol FILE 'my_upper.zip';
 
 -- 5
 CREATE EXTERNAL FUNCTION IF NOT EXISTS <schema>.my_upper
