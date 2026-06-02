@@ -48,7 +48,7 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 | `HTTP_GENERAL_ERROR(640)` | RAM 信任策略未配 / Bucket 跨地域 | 见 [SETUP.md](../SETUP.md) 对应云章节 |
 | `AccessDenied` | RAM 角色缺 OSS 权限 | 角色详情 → 新增授权 → `AliyunOSSFullAccess` |
 | 改完 `config.json` 部署没变化 | 改了配置但没重新渲染 SQL | 改完 config 后必须重跑 `python ../3-render-sql.py` |
-| 第一次调用很久没返回 | FC 冷启动，首次需从 OSS 下载 zip | 等 5-10 秒，不是挂了 |
+| 第一次调用很久没返回 | FC 冷启动，首次需从对象存储下载 zip | 等 5-10 秒，不是挂了 |
 | `deploy_generated.sql` 不存在 | 没跑渲染 | `python ../3-render-sql.py` |
 | 所有脚本都要从项目目录内执行 | 共享脚本用 `../` 引用，不在项目目录内路径不对 | `cd python_quickstart` 后再执行 |
 

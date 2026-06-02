@@ -24,11 +24,12 @@
 
 | | Python | Java |
 |------|--------|------|
+| 运行时 | Python 3.10（`python3.mc.v0`） | Java 8（`java8.hive2.v0`，不支持 Java 9+） |
 | 函数类型 | UDF | UDF / UDAF / UDTF |
 | 入口方法 | `evaluate()` | `GenericUDF.evaluate()` / `GenericUDAFEvaluator` / `GenericUDTF.process()` |
-| DDL | `'python3.mc.v0'` | `'java8.hive2.v0'` + 可选的 `'AGGREGATOR'` 或 `'TABLE_VALUED'` |
+| DDL | `'remote.udf.api'='python3.mc.v0'` | `'remote.udf.api'='java8.hive2.v0'` + 可选 `'AGGREGATOR'` 或 `'TABLE_VALUED'` |
 | 打包 | `zip` (纯 .py) | Maven `jar-with-dependencies` → zip |
-| 依赖 | pip 下载 Linux 版 | Maven scope=provided（Hive 运行环境自带） |
+| 依赖 | pip 下载 Linux x86_64 wheel | Maven scope=provided（Hive 运行环境自带） |
 
 ---
 
@@ -247,7 +248,7 @@ LATERAL <schema>.log_explode(s.log) t;
 | 坑 | 原因 | 解决 |
 |----|------|------|
 | `ClassNotFoundException` / `MethodNotFoundException` | 包名写错或方法签名不匹配 | 检查 `AS` 路径与 jar 内实际类名一致 |
-| `NoSuchMethodError: Matcher.replaceAll` | FC 运行 Java 8，不支持 Java 9+ 的 lambda 替换 | 用 `StringBuffer` + `appendReplacement` 代替 |
+| `NoSuchMethodError: Matcher.replaceAll` | FC 仅支持 Java 8（`java8.hive2.v0`），不支持 Java 9+ API | 用 `StringBuffer` + `appendReplacement` 代替 Java 9 的 `replaceAll(Function)` |
 | 初始化失败 | `initialize()` 没写 `checkArgPrimitive/checkArgsSize` | 必须写参数校验，否则一调就崩 |
 | UDAF/UDAF 创建成功但调用报错 | DDL 忘了加 `AGGREGATOR` 或 `TABLE_VALUED` | 检查 `WITH PROPERTIES` 中对应属性 |
 | UDAF 无数据返回 NULL | 表有 0 行 | 不是报错，是 UDAF 正常行为 |
