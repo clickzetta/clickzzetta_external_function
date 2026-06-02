@@ -45,22 +45,13 @@ aliyun.fc.region             → cn-shanghai（不变）
 
 ---
 
-## 3. 打包、检查、部署
+## 3. 打包、检查、部署（在 `python_ai_function/` 目录下执行）
 
 ```bash
-# 1. 安装本地依赖（仅第一次）
 pip install -r requirements.txt
-
-# 2. 打包（含 Linux dashscope 依赖，约 15 MB）
 python 2-package.py --deps
-
-# 3. 检查配置完整性
 python 1-check-config.py
-
-# 4. 生成部署 SQL
 python 3-render-sql.py
-
-# 5. 部署
 cz-cli sql -f dist/4-deploy_generated.sql --write
 ```
 

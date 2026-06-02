@@ -66,7 +66,7 @@ python 2-package.py     # Maven 编译 + zip 打包
 
 ---
 
-## 3. 部署
+## 3. 部署（在 `java_udf/` 目录下执行）
 
 ```bash
 python ../1-check-config.py

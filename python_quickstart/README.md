@@ -29,7 +29,7 @@ cp ../config.example.json config.json
 
 ---
 
-## 4. 部署
+## 4. 部署（在 `python_quickstart/` 目录下执行）
 
 ```bash
 python ../1-check-config.py

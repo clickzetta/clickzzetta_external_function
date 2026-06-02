@@ -75,7 +75,7 @@ python3 -c "import sys; sys.path.insert(0,'src'); from ml_toolkit import sentime
 
 ---
 
-## 2. 部署
+## 2. 部署（在 `python_advanced/` 目录下执行）
 
 ```bash
 python ../1-check-config.py
