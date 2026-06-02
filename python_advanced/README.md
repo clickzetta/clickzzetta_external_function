@@ -22,7 +22,7 @@
 
 ---
 
-## 1. 打包、部署（在 `python_advanced/` 目录下执行）
+## 1. 打包与部署（在 `python_advanced/` 目录下执行）
 
 ```bash
 python 2-package.py          # 打包代码 + Linux 依赖（~100 MB）
@@ -85,6 +85,19 @@ SELECT <schema>.anomaly_detect('[1,2,3,4,100]');
 SELECT <schema>.sentiment_score('产品质量非常好，物流很快，非常满意！');
 SELECT <schema>.tfidf_keywords('["AI和机器学习是未来方向","深度学习在图像识别取得突破","AI将改变各行各业"]', 3);
 ```
+
+---
+
+### 常见坑
+
+| 坑 | 原因 | 解决 |
+|----|------|------|
+| `ImportError: No module named 'sklearn'` | zip 里没 sklearn，打包时没跑 `2-package.py` | 重跑 `python 2-package.py` |
+| `OSError: cannot open shared object file` | 打包了 macOS 的 `.dylib`，FC 需要 Linux `.so` | 确认 `2-package.py` 中 `--platform manylinux2014_x86_64` |
+| 冷启动超时（>30s） | 100MB zip 下载慢 | 检查 OSS 和 FC 是否同地域，首次调用等 5-10 秒 |
+| 结果不对但不报错 | 代码逻辑 bug，FC 没有 Python 日志 | 先 `python3 -c "from ml_toolkit import ..."` 本地测好再部署 |
+| `function not found` | 没加 schema 前缀 | `SELECT <schema>.xxx(...)` |
+| 改完 `config.json` 部署没变化 | 改了配置但没重新渲染 SQL | 重跑 `python ../3-render-sql.py` |
 
 ---
 

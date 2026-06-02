@@ -26,7 +26,7 @@ WITH PROPERTIES ('remote.udf.api'='java8.hive2.v0','remote.udf.category'='TABLE_
 SELECT <schema>.pii_mask('我的手机13812345678，邮箱alice@example.com，身份证310101199001011234');
 
 CREATE TABLE IF NOT EXISTS <schema>.java_udf_test_scores (val DOUBLE);
-DELETE FROM <schema>.java_udf_test_scores;
+DELETE FROM <schema>.java_udf_test_scores WHERE 1=1;
 INSERT INTO <schema>.java_udf_test_scores VALUES (3.5), (4.2), (2.8), (5.0), (3.9);
 SELECT <schema>.agg_stats(val) FROM <schema>.java_udf_test_scores;
 

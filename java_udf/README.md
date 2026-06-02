@@ -6,8 +6,9 @@
 
 ## 前置条件
 
-- JDK 8+ / Maven 3+
-- [SETUP.md](../SETUP.md) 的云环境已完成（一次性，与 Python 示例共享）
+- JDK 8+（`java -version`）
+- Maven 3+（`mvn --version`，macOS: `brew install maven`）
+- [SETUP.md](../SETUP.md) 的云环境已完成
 
 ---
 
@@ -241,13 +242,20 @@ LATERAL <schema>.log_explode(s.log) t;
 2. **return 调试。** 遇到问题时，让 `evaluate()` 返回 `"DEBUG: input was " + value`，从 SQL 结果里看
 3. **只改一个函数。** 三个函数放一个 jar 没关系，但只调试一个，一个一个来
 
-### 常见坑：
+### 常见坑
 
-- **`ClassNotFoundException`**：`AS` 路径写错了包名，或 jar 里缺少类
-- **`MethodNotFoundException`**：类名对但方法签名不对（参数类型和个数）
-- **初始化失败**：`initialize()` 抛异常 → 函数创建成功但一调就崩。checkArgPrimitive/checkArgsSize 一定要写
-- **UDAF 无数据**：表有 0 行时会返回 NULL，不是报错
-- **UDTF 列数不匹配**：`SELECT *` 加 UDTF 可能列数混乱，建议显式列出列名 `t.ts, t.event`
+| 坑 | 原因 | 解决 |
+|----|------|------|
+| `ClassNotFoundException` / `MethodNotFoundException` | 包名写错或方法签名不匹配 | 检查 `AS` 路径与 jar 内实际类名一致 |
+| `NoSuchMethodError: Matcher.replaceAll` | FC 运行 Java 8，不支持 Java 9+ 的 lambda 替换 | 用 `StringBuffer` + `appendReplacement` 代替 |
+| 初始化失败 | `initialize()` 没写 `checkArgPrimitive/checkArgsSize` | 必须写参数校验，否则一调就崩 |
+| UDAF/UDAF 创建成功但调用报错 | DDL 忘了加 `AGGREGATOR` 或 `TABLE_VALUED` | 检查 `WITH PROPERTIES` 中对应属性 |
+| UDAF 无数据返回 NULL | 表有 0 行 | 不是报错，是 UDAF 正常行为 |
+| UDTF 列数混乱 | `SELECT *` 加 UDTF 会多列 | 显式列出 `t.ts, t.event`，不用 `*` |
+| DELETE 报 `DANGEROUS_WRITE` | cz-cli 拦截无 WHERE 的 DELETE | 加 `WHERE 1=1` |
+| `function not found` | 没加 schema 前缀 | 调用时加 `<schema>.` |
+| 改完 `config.json` 部署没变化 | 忘了重新渲染 | 重跑 `python ../3-render-sql.py` |
+| 第一次调用很久没返回 | FC 冷启动 | 等 5-10 秒 |
 
 ---
 

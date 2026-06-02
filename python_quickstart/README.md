@@ -44,11 +44,13 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 
 | 错误 | 原因 | 解决 |
 |------|------|------|
-| `function not found` | 没加 schema 前缀 | `SELECT <schema>.my_upper('hello')` |
-| `HTTP_GENERAL_ERROR(640)` | RAM 信任策略未配 / Bucket 跨地域 | 见 [SETUP.md > 验证信任策略](../SETUP.md) |
+| `function not found` | 没加 schema 前缀，这是硬性要求 | `SELECT <schema>.my_upper('hello')` |
+| `HTTP_GENERAL_ERROR(640)` | RAM 信任策略未配 / Bucket 跨地域 | 见 [SETUP.md](../SETUP.md) 对应云章节 |
 | `AccessDenied` | RAM 角色缺 OSS 权限 | 角色详情 → 新增授权 → `AliyunOSSFullAccess` |
-| PUT 执行后 404 | 多行 PUT 被注释行中断 | PUT 命令一行写完，不拆行 |
+| 改完 `config.json` 部署没变化 | 改了配置但没重新渲染 SQL | 改完 config 后必须重跑 `python ../3-render-sql.py` |
+| 第一次调用很久没返回 | FC 冷启动，首次需从 OSS 下载 zip | 等 5-10 秒，不是挂了 |
 | `deploy_generated.sql` 不存在 | 没跑渲染 | `python ../3-render-sql.py` |
+| 所有脚本都要从项目目录内执行 | 共享脚本用 `../` 引用，不在项目目录内路径不对 | `cd python_quickstart` 后再执行 |
 
 ---
 
