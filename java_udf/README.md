@@ -108,7 +108,7 @@ public class PiiMaskUDF extends GenericUDF {
 - `evaluate(args)` — 每行数据调一次。核心业务逻辑
 - `getDisplayString(children)` — 返回函数名展示字符串
 
-**坑：NullPointerException in evaluate**
+**注意：NullPointerException in evaluate**
 
 FC 可能传入 NULL 值。`evaluate` 的第一行通常是：
 ```java
@@ -142,7 +142,7 @@ AggStatsUDAF extends GenericUDAFResolver2   // 外层：路由到 Evaluator
 | `merge(buf, partial)` | 合并分区 | 合并到全局 buffer |
 | `terminate(buf)` | 全部处理完 | 输出最终结果 |
 
-**坑：UDAF DDL 忘了加 `AGGREGATOR`**
+**注意：UDAF DDL 忘了加 `AGGREGATOR`**
 
 ```sql
 -- ❌ 缺了这句，函数创建成功但调用时报错
@@ -182,14 +182,14 @@ public class LogExplodeUDTF extends GenericUDTF {
 - `process(record)` — 对每个输入行，可以调多次 `forward()` 输出多行
 - `close()` — 清理资源
 
-**坑：UDTF 必须用 LATERAL**
+**注意：UDTF 必须用 LATERAL**
 
 ```sql
 -- ❌ SELECT func(log) FROM my_table;  不行
 -- ✅ SELECT t.ts, t.event FROM my_table, LATERAL func(log) t;
 ```
 
-**坑：UDTF DDL 忘了加 `TABLE_VALUED`**
+**注意：UDTF DDL 忘了加 `TABLE_VALUED`**
 
 ```sql
 -- ❌ 缺了这句，函数创建成功但调用时报 "not a table function"
@@ -260,9 +260,9 @@ public static void main(String[] args) {
 
 ## 6. 调试
 
-### 常见坑
+### 注意事项
 
-| 坑 | 原因 | 解决 |
+| 现象 | 原因 | 处理 |
 |----|------|------|
 | `ClassNotFoundException` / `MethodNotFoundException` | 包名写错或方法签名不匹配 | 检查 `AS` 路径与 jar 内实际类名一致 |
 | `NoSuchMethodError: Matcher.replaceAll` | FC 仅支持 Java 8（`java8.hive2.v0`），不支持 Java 9+ API | 用 `StringBuffer` + `appendReplacement` 代替 Java 9 的 `replaceAll(Function)` |

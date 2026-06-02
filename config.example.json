@@ -4,49 +4,47 @@
   "auth": "ak",
   "schema": "cz-cli sql \"SELECT current_schema()\" 获取",
   "aliyun": {
-    "_说明": "阿里云 — SETUP.md 第 2.1 节",
+    "_说明": "阿里云 — SETUP.md 第 1 节",
     "oss": {
       "bucket": "你的-oss-bucket-名",
       "endpoint": "oss-cn-shanghai.aliyuncs.com",
-      "access_id": "你的-AccessKey-ID（ak 模式，与 access_key 同时填）",
-      "access_key": "你的-AccessKey-Secret（ak 模式，与 access_id 同时填）",
-      "role_arn": "acs:ram::你的账号ID:role/你的角色名（role_arn 模式，填了则用角色）",
+      "access_id": "你的-AccessKey-ID",
+      "access_key": "你的-AccessKey-Secret",
       "region": "cn-shanghai"
     },
     "fc": {
       "region": "cn-shanghai",
-      "role_arn": "acs:ram::你的账号ID:role/你的角色名"
+      "role_arn": "acs:ram::你的账号ID:role/CzUDFRole"
     }
   },
   "tencent": {
-    "_说明": "腾讯云 — SETUP.md 第 2.2 节",
+    "_说明": "腾讯云 — SETUP.md 第 2 节",
     "cos": {
       "bucket": "你的-cos-bucket-名",
       "region": "ap-shanghai",
       "app_id": "你的-APP-ID（必须）",
       "access_key": "你的-SecretId（ak 模式）",
       "secret_key": "你的-SecretKey（ak 模式）",
-      "role_arn": "qcs::cam::uin/你的账号ID:roleName/你的角色名（role_arn 模式）"
+      "role_arn": "qcs::cam::uin/你的账号ID:roleName/LakehouseRole（role_arn 模式）"
     },
     "scf": {
       "region": "ap-shanghai",
       "namespace": "default（必须）",
-      "role_arn": "qcs::cam::uin/你的账号ID:roleName/你的角色名"
+      "role_arn": "qcs::cam::uin/你的账号ID:roleName/LakehouseRole"
     }
   },
   "aws": {
-    "_说明": "AWS — SETUP.md 第 2.3 节",
+    "_说明": "AWS — SETUP.md 第 3 节",
     "s3": {
       "bucket": "你的-s3-bucket-名",
-      "region": "cn-north-1",
-      "endpoint": "s3.cn-north-1.amazonaws.com.cn（中国区）或 s3.amazonaws.com（国际）",
+      "region": "ap-southeast-1（国际）或 cn-north-1（中国）",
+      "endpoint": "s3.<region>.amazonaws.com（国际）或 s3.<region>.amazonaws.com.cn（中国）",
       "access_key_id": "你的-AccessKey-ID（ak 模式）",
-      "secret_access_key": "你的-SecretAccessKey（ak 模式）",
-      "role_arn": "arn:aws:iam::你的账号ID:role/你的角色名（role_arn 模式）"
+      "secret_access_key": "你的-SecretAccessKey（ak 模式）"
     },
     "lambda": {
-      "region": "cn-north-1",
-      "role_arn": "arn:aws:iam::你的账号ID:role/你的角色名"
+      "region": "ap-southeast-1",
+      "role_arn": "arn:aws:iam::你的账号ID:role/Lambda-S3-Role"
     }
   }
 }

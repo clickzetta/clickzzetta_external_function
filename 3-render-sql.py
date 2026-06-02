@@ -56,7 +56,7 @@ PROVIDER = 'tencent'
 REGION = '{g('tencent.scf.region')}'
 ROLE_ARN = '{g('tencent.scf.role_arn')}'
 NAMESPACE = '{g('tencent.scf.namespace', 'default')}'
-CODE_BUCKET = '{g('tencent.cos.bucket')}';
+CODE_BUCKET = '{g('tencent.cos.bucket')}-{g('tencent.cos.app_id')}';
 
 -- 3   External Volume
 CREATE EXTERNAL VOLUME IF NOT EXISTS udf_vol
