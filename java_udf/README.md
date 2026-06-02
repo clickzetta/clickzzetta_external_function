@@ -41,13 +41,16 @@ cp ../config.example.json config.json
 
 ---
 
-## 2. 编译
+## 2. 部署（在 `java_udf/` 目录下执行）
 
 ```bash
-python 2-package.py     # Maven 编译 + zip 打包
+python 2-package.py           # Maven 编译 + zip 打包
+python ../1-check-config.py    # 检查配置
+python ../3-render-sql.py      # 渲染 SQL
+cz-cli sql -f dist/4-deploy_generated.sql --write  # 部署
 ```
 
-产物：`dist/all_udf.zip`（~1 MB，只含你自己的 class + 第三方依赖 class，不含 Hive 本身）。
+产物：`dist/all_udf.zip`（~1 MB）。
 
 ### 为什么 Hive 依赖是 provided？
 
@@ -66,17 +69,9 @@ python 2-package.py     # Maven 编译 + zip 打包
 
 ---
 
-## 3. 部署（在 `java_udf/` 目录下执行）
-
-```bash
-python ../1-check-config.py
-python ../3-render-sql.py
-cz-cli sql -f dist/4-deploy_generated.sql --write
-```
-
 ---
 
-## 4. 代码详解
+## 3. 代码详解
 
 ### UDF — `PiiMaskUDF.java`
 
@@ -202,7 +197,7 @@ WITH PROPERTIES ('remote.udf.category'='TABLE_VALUED')
 
 ---
 
-## 5. 测试
+## 4. 测试
 
 ### UDF
 
@@ -232,7 +227,7 @@ LATERAL <schema>.log_explode(s.log) t;
 
 ---
 
-## 6. 调试
+## 5. 调试
 
 ### None of these will work:
 
@@ -256,7 +251,7 @@ LATERAL <schema>.log_explode(s.log) t;
 
 ---
 
-## 7. 清理
+## 6. 清理
 
 ```bash
 cz-cli sql -f dist/5-cleanup_generated.sql --write
