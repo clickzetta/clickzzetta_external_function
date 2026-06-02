@@ -1,35 +1,34 @@
 package com.clickzetta.udf;
 
-import org.apache.hadoop.hive.ql.exec.UDFArgumentException;
 import org.apache.hadoop.hive.ql.metadata.HiveException;
 import org.apache.hadoop.hive.ql.udf.generic.GenericUDAFEvaluator;
 import org.apache.hadoop.hive.ql.udf.generic.GenericUDAFResolver2;
-import org.apache.hadoop.hive.ql.udf.generic.SimpleGenericUDAFParameterInfo;
+import org.apache.hadoop.hive.ql.udf.generic.GenericUDAFParameterInfo;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspectorFactory;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorFactory;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.DoubleObjectInspector;
-import org.apache.hadoop.hive.serde2.lazy.LazyDouble;
+import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
 import org.apache.hadoop.io.DoubleWritable;
 
 /**
- * UDAF — 文本评分聚合：对每行返回一个 JSON 分数，聚合后输出 avg/min/max/count
+ * UDAF — 聚合统计：SUM, AVG, MIN, MAX, COUNT
+ * 基于 Hive 2.x GenericUDAFResolver2
  *
  * SQL 用法:
- *   SELECT <schema>.agg_stats(score_json) FROM article_ratings;
+ *   SELECT <schema>.agg_stats(val) FROM table;
  *
  * DDL 必须加:
  *   WITH PROPERTIES ('remote.udf.api'='java8.hive2.v0', 'remote.udf.category'='AGGREGATOR')
  */
-public class AggStatsUDAF extends GenericUDAFResolver2 {
+public class AggStatsUDAF implements GenericUDAFResolver2 {
 
     @Override
-    public GenericUDAFEvaluator getEvaluator(SimpleGenericUDAFParameterInfo info) throws UDFArgumentException {
-        return getEvaluator(info.getAllParameters());
+    public GenericUDAFEvaluator getEvaluator(GenericUDAFParameterInfo info) {
+        return new AggStatsEvaluator();
     }
 
-    @Override
-    public GenericUDAFEvaluator getEvaluator(TypeInfo[] parameters) throws UDFArgumentException {
+    public GenericUDAFEvaluator getEvaluator(TypeInfo[] parameters) {
         return new AggStatsEvaluator();
     }
 
@@ -50,7 +49,6 @@ public class AggStatsUDAF extends GenericUDAFResolver2 {
             if (m == Mode.PARTIAL1 || m == Mode.COMPLETE) {
                 inputOI = (DoubleObjectInspector) parameters[0];
             }
-            // 返回 output: {sum, min, max, count}
             return ObjectInspectorFactory.getStandardListObjectInspector(
                     PrimitiveObjectInspectorFactory.writableDoubleObjectInspector);
         }

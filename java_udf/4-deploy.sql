@@ -1,5 +1,4 @@
--- 4   上传代码包
-PUT '<project_dir>/dist/all_udf.zip' TO VOLUME <volume> FILE 'all_udf.zip';
+PUT '<project_dir>/dist/all_udf.zip' TO VOLUME <volume> FILE 'all_udf.zip';  -- 4. 上传代码包
 
 -- 5a  UDF
 CREATE EXTERNAL FUNCTION IF NOT EXISTS <schema>.pii_mask

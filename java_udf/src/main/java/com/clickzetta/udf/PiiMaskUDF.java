@@ -43,17 +43,34 @@ public class PiiMaskUDF extends GenericUDF {
         return PrimitiveObjectInspectorFactory.javaStringObjectInspector;
     }
 
+    private static String maskPhone(String s) {
+        return s.substring(0, 3) + "****" + s.substring(7);
+    }
+    private static String maskEmail(String s) {
+        return s.charAt(0) + "***@" + s.split("@")[1];
+    }
+    private static String maskIdCard(String s) {
+        return s.substring(0, 6) + "********" + s.substring(14);
+    }
+
+    private static String mask(Pattern p, String text, java.util.function.Function<String, String> fn) {
+        StringBuffer sb = new StringBuffer();
+        java.util.regex.Matcher m = p.matcher(text);
+        while (m.find()) {
+            m.appendReplacement(sb, fn.apply(m.group()));
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
+
     @Override
     public Object evaluate(DeferredObject[] arguments) throws HiveException {
         String text = textOI.getPrimitiveJavaObject(arguments[0].get());
         if (text == null || text.isEmpty()) return "";
 
-        text = PHONE.matcher(text).replaceAll(m ->
-                m.group().substring(0, 3) + "****" + m.group().substring(7));
-        text = EMAIL.matcher(text).replaceAll(m ->
-                m.group().charAt(0) + "***@" + m.group().split("@")[1]);
-        text = ID_CARD.matcher(text).replaceAll(m ->
-                m.group().substring(0, 6) + "********" + m.group().substring(14));
+        text = mask(PHONE, text, PiiMaskUDF::maskPhone);
+        text = mask(EMAIL, text, PiiMaskUDF::maskEmail);
+        text = mask(ID_CARD, text, PiiMaskUDF::maskIdCard);
 
         return text;
     }

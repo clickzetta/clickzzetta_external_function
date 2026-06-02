@@ -22,9 +22,7 @@ LOCATION 'oss://<aliyun.oss.bucket>/'
 USING CONNECTION <clickzetta.storage_connection>
 DIRECTORY = (ENABLE = true);
 
--- 4. 上传代码包到 External Volume
---    先执行：python 2-package.py --deps
-PUT '<project_dir>/dist/clickzetta_ai_functions_full.zip' TO VOLUME <clickzetta.volume> FILE 'clickzetta_ai_functions_full.zip';
+PUT '<project_dir>/dist/clickzetta_ai_functions_full.zip' TO VOLUME <clickzetta.volume> FILE 'clickzetta_ai_functions_full.zip';  -- 4. 上传 (先执行 python 2-package.py --deps)
 
 -- 5. 创建 External Function
 --    DDL: CREATE EXTERNAL FUNCTION [schema_name.]function_name

@@ -1,5 +1,4 @@
--- 4   上传代码包
-PUT '<project_dir>/dist/ml_toolkit.zip' TO VOLUME <volume> FILE 'ml_toolkit.zip';
+PUT '<project_dir>/dist/ml_toolkit.zip' TO VOLUME <volume> FILE 'ml_toolkit.zip';  -- 4. 上传
 
 -- 5   CREATE 5 functions
 CREATE EXTERNAL FUNCTION IF NOT EXISTS <schema>.pii_mask             AS 'ml_toolkit.pii_mask'             USING ARCHIVE 'volume://<volume>/ml_toolkit.zip' CONNECTION <fc_conn> WITH PROPERTIES ('remote.udf.api'='python3.mc.v0','remote.udf.protocol'='http.arrow.v0');

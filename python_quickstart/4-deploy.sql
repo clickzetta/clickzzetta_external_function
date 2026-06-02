@@ -1,5 +1,4 @@
--- 4   上传代码包
-PUT '<project_dir>/dist/my_upper.zip' TO VOLUME <volume> FILE 'my_upper.zip';
+PUT '<project_dir>/dist/my_upper.zip' TO VOLUME <volume> FILE 'my_upper.zip';  -- 4. 上传
 
 -- 5   CREATE FUNCTION
 CREATE EXTERNAL FUNCTION IF NOT EXISTS <schema>.my_upper

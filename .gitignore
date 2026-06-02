@@ -53,3 +53,5 @@ data/*_validation_*.json
 config.json
 dist/*_generated.sql
 dist/*.zip
+java_udf/target/
+java_udf/dist/
