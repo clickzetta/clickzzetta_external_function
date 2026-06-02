@@ -40,6 +40,25 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 
 看到 `HELLO WORLD` 就成功了。
 
+---
+
+## 5. 本地测试
+
+部署前可以先在本地跑一下，确认代码没问题：
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0, 'src')
+from my_upper import my_upper
+print(my_upper().evaluate('hello'))
+"
+# → HELLO
+```
+
+FC 环境没有日志，代码逻辑 bug 只能返回错误 JSON，本地先测通再部署省很多时间。
+
+---
+
 ### 常见坑
 
 | 错误 | 原因 | 解决 |
@@ -54,7 +73,7 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 
 ---
 
-## 5. 代码
+## 6. 代码
 
 `src/my_upper.py`，一个类、一个 `evaluate` 方法：
 
@@ -67,7 +86,7 @@ class my_upper(object):
 
 ---
 
-## 6. 清理
+## 7. 清理
 
 ```bash
 cz-cli sql -f dist/5-cleanup_generated.sql --write

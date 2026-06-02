@@ -229,19 +229,36 @@ LATERAL <schema>.log_explode(s.log) t;
 
 ---
 
-## 5. 调试
+## 5. 本地测试
 
-### None of these will work:
+FC 环境没有 stdout 也没有堆栈。**一定要本地测通再部署。**
 
-- `System.out.println()` — 没有 stdout 终端
-- `System.err.println()` — 同上
-- `throw new RuntimeException("debug")` — FC 只返回 "Internal error" 没有堆栈
+**UDF**：在 `PiiMaskUDF.java` 里加个 main 方法直接测正则逻辑。
 
-### What does work:
+```java
+public static void main(String[] args) {
+    String text = "我的手机13812345678，邮箱alice@example.com";
+    // …调 maskPhone/maskEmail/maskIdCard 测试
+    System.out.println(text);
+}
+```
 
-1. **本地单元测试。** 编写 JUnit 测试覆盖 `evaluate()` 逻辑，本地跑通后再部署
-2. **return 调试。** 遇到问题时，让 `evaluate()` 返回 `"DEBUG: input was " + value`，从 SQL 结果里看
-3. **只改一个函数。** 三个函数放一个 jar 没关系，但只调试一个，一个一个来
+**UDAF / UDTF**：构造几个典型输入，本地 new 出对象后手动调 `evaluate()` / `process()`，打印输出验证逻辑。
+
+如果不想写完整的 `ObjectInspector` 初始化，更省事的方法是直接在 main 方法里跑：
+
+```java
+public static void main(String[] args) {
+    // 手动构造输入，调 evaluate 的核心逻辑（Matcher 部分）
+    System.out.println(new PiiMaskUDF().maskPhone("13812345678"));
+}
+```
+
+**FC 环境没有 stdout，也没有堆栈。所以一定要本地测通再部署。**
+
+---
+
+## 6. 调试
 
 ### 常见坑
 

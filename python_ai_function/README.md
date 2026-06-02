@@ -59,7 +59,24 @@ cz-cli sql -f dist/4-deploy_generated.sql --write
 
 ---
 
-## 4. 测试
+## 4. 本地测试
+
+部署前先在本地验证代码和 API Key 是否正常：
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0, 'src')
+from ai_functions_complete import ai_text_summarize
+r = ai_text_summarize().evaluate('你好世界', '<你的百炼API_Key>')
+print(r)
+"
+```
+
+30 个函数都可以这样测：创建实例 → `.evaluate(...)` → 打印。
+
+---
+
+## 5. 测试（SQL）
 
 部署时已自动执行测试（`deploy.sql` 末尾的 SELECT）。或在 `dist/4-deploy_generated.sql` 末尾找，也可以修改占位符后手动执行：
 
