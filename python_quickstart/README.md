@@ -12,7 +12,7 @@
 
 ## 2. 环境准备（一次性）
 
-按 [SETUP.md](../SETUP.md) 完成阿里云 OSS / FC / RAM 角色配置。
+按 [SETUP.md](../SETUP.md) 完成对应云的环境配置（阿里云 / 腾讯云 / AWS）。
 
 ---
 
@@ -92,7 +92,7 @@ class my_upper(object):
 cz-cli sql -f dist/5-cleanup_generated.sql --write
 ```
 
-OSS Bucket 和 RAM 角色去阿里云控制台手动删除。
+对象存储 Bucket 和角色去对应云控制台手动删除。
 
 ---
 
